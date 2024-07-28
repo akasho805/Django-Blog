@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+    <title>Blog Project</title>
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-tC7fC8XtcaChqFFcGv1mGXeH7tTx+mLtK4MtJlIopMo8jB2F7axKNFLDtjra8wxC" crossorigin="anonymous">
+
+    <!-- Medium Editor CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css"
+        integrity="sha384-DxXzQmDijEuX+QX3C1kT4WPUUKi2jG1h+OaUMOmu1KdCpJ5tfP9DT0aaJGo0cXAE" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Russo+One&display=swap" rel="stylesheet">
+
+    <!-- Medium Editor JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"
+        integrity="sha384-tXPtjA8pWIlD/CwJhlZghLprc6nNkbRVbdbWQNkYVcdPQ9KrI6/ntGeXhIFtYQ/4" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-OySdoPqpspDP5p6i7T0P1MsE2XtyWvOsKofNxI8uMwsZDk4RUJ4aSD/7ONg9ZZU2" crossorigin="anonymous"></script>
+</head>
+
+<body class='loader'>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark techfont custom-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand bigbrand" href="{% url 'post_list' %}">My Tech Blog</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.github.com">Github</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.linkedin.com">LinkedIn</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'post_new' %}">New Post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'post_draft_list' %}">Drafts</a>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link nav-link" style="display: inline; padding: 0;">Log out</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Welcome: {{ user.username }}</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">
+                            <span class="glyphicon glyphicon-user"></span> Log In
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- The actual blog posts -->
+    <div class="content container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="blog_posts">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script type="text/javascript" src="{% static 'js/blog.js' %}"></script>
+</body>
+
+</html>
